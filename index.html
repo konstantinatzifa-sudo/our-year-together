@@ -3,14 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Our Year Together ♡</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Georgia, "Times New Roman", serif;
+            background: #f8f3ed;
+            color: #302923;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+            background:
+                linear-gradient(rgba(248,243,237,0.72), rgba(248,243,237,0.72)),
+                url("https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=2000&q=80")
+                center/cover;
+        }
+
+        .small-title {
+            font-family: Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 12px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: clamp(55px, 11vw, 110px);
+            font-weight: normal;
+            line-height: 0.9;
+            margin-bottom: 25px;
+        }
+
+        .date {
+            font-family: Arial, sans-serif;
+            letter-spacing: 2px;
+            font-size: 13px;
+        }
+
+        .scroll {
+            margin-top: 80px;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: float 2s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(8px);
+            }
+        }
+
+        section {
+            padding: 100px 8%;
+        }
+
+        .intro {
+            max-width: 800px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .number {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: clamp(38px, 6vw, 70px);
+            font-weight: normal;
+            margin-bottom: 25px;
+        }
+
+        .intro p {
+            font-size: 19px;
+            line-height: 1.8;
+        }
+
+        .memories {
+            background: #302923;
+            color: #f8f3ed;
+        }
+
+        .memory-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .memory-header h2 {
+            margin-bottom: 15px;
+        }
+
+        .memory-header p {
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+
+        .photo-grid {
+            max-width: 1100px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .photo-placeholder {
+            aspect-ratio: 1 / 1;
+            background: #574d45;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .letter {
+            max-width: 750px;
+            margin: auto;
+        }
+
+        .letter p {
+            font-size: 21px;
+            line-height: 1.9;
+            margin-bottom: 25px;
+        }
+
+        .song {
+            background: #e7ddd2;
+            text-align: center;
+        }
+
+        .song-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .artist {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        footer {
+            padding: 70px 20px;
+            text-align: center;
+            background: #302923;
+            color: #f8f3ed;
+        }
+
+        footer p {
+            font-size: 25px;
+            font-style: italic;
+        }
+
+        @media (max-width: 700px) {
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            section {
+                padding: 75px 7%;
+            }
+
+            .letter p {
+                font-size: 18px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>Our Year Together ♡</h1>
+    <!-- COVER -->
+    <header class="hero">
+        <div class="small-title">Our story</div>
 
-    <p>One year of us.</p>
+        <h1>
+            One Year<br>
+            With You
+        </h1>
+
+        <div class="date">
+            10 SEPTEMBER 2025 — 10 SEPTEMBER 2026
+        </div>
+
+        <div class="scroll">
+            ↓ &nbsp; scroll to begin
+        </div>
+    </header>
+
+
+    <!-- INTRO -->
+    <section>
+        <div class="intro">
+
+            <div class="number">01 — US</div>
+
+            <h2>A year of us.</h2>
+
+            <p>
+                One year ago, our story began.
+                This little corner of the internet is a collection
+                of the moments, places, laughs and memories
+                that made this year ours.
+            </p>
+
+        </div>
+    </section>
+
+
+    <!-- MEMORIES -->
+    <section class="memories">
+
+        <div class="memory-header">
+
+            <div class="number">02 — MEMORIES</div>
+
+            <h2>The moments I want to remember.</h2>
+
+            <p>
+                OUR FIRST DIGITAL PHOTO ALBUM
+            </p>
+
+        </div>
+
+        <div class="photo-grid">
+
+            <div class="photo-placeholder">
+                PHOTO 01
+            </div>
+
+            <div class="photo-placeholder">
+                PHOTO 02
+            </div>
+
+            <div class="photo-placeholder">
+                PHOTO 03
+            </div>
+
+            <div class="photo-placeholder">
+                PHOTO 04
+            </div>
+
+            <div class="photo-placeholder">
+                PHOTO 05
+            </div>
+
+            <div class="photo-placeholder">
+                PHOTO 06
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SONG -->
+    <section class="song">
+
+        <div class="number">03 — OUR SONG</div>
+
+        <h2>Waiting</h2>
+
+        <div class="song-title">
+            Notion
+        </div>
+
+        <div class="artist">
+            Our song ♡
+        </div>
+
+    </section>
+
+
+    <!-- LETTER -->
+    <section>
+
+        <div class="letter">
+
+            <div class="number">04 — A LETTER</div>
+
+            <h2>Dear Fabian,</h2>
+
+            <p>
+                One year ago you asked me to be your girlfriend.
+                By accepting, I didn't know how much this year
+                would come to mean to me.
+            </p>
+
+            <p>
+                Somehow, between all the ordinary days and
+                the little adventures, you became such an
+                important part of my life.
+            </p>
+
+            <p>
+                Here's to everything we've already experienced,
+                and everything that's still waiting for us.
+            </p>
+
+            <p>
+                Happy one year, my love. ♡
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- END -->
+    <footer>
+
+        <p>
+            To be continued...
+        </p>
+
+    </footer>
 
 </body>
 </html>
