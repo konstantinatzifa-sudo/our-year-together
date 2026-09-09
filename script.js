@@ -1,6 +1,6 @@
 const SUPABASE_URL = "https://itdlakiwmxpneznqdphn.supabase.co";
 
-// Put your Supabase PUBLISHABLE KEY between the quotation marks
+// Keep your real publishable key here
 const SUPABASE_KEY = "sb_publishable_9Jbfxdv4D0t8ndJ-lrSHPA_JA5Jbgaa";
 
 
@@ -10,24 +10,109 @@ document.addEventListener("DOMContentLoaded", function () {
     const photoInput = document.getElementById("photoInput");
     const photoGrid = document.getElementById("photoGrid");
 
-
-    // Check that everything exists
     if (!uploadButton || !photoInput || !photoGrid) {
         console.error("Photo uploader elements were not found.");
         return;
     }
 
 
-    // Open the photo picker
+    // --------------------------------
+    // LOAD EXISTING PHOTOS
+    // --------------------------------
+
+    loadPhotos();
+
+
+    async function loadPhotos() {
+
+        try {
+
+            const response = await fetch(
+                `${SUPABASE_URL}/storage/v1/object/list/photos`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Authorization": `Bearer ${SUPABASE_KEY}`,
+                        "apikey": SUPABASE_KEY,
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        prefix: "",
+                        limit: 100,
+                        offset: 0,
+                        sortBy: {
+                            column: "created_at",
+                            order: "asc"
+                        }
+                    })
+                }
+            );
+
+
+            if (!response.ok) {
+
+                const errorText = await response.text();
+
+                console.error(
+                    "Could not load photos:",
+                    errorText
+                );
+
+                return;
+            }
+
+
+            const files = await response.json();
+
+
+            for (const file of files) {
+
+                if (!file.name) {
+                    continue;
+                }
+
+
+                const photoURL =
+                    `${SUPABASE_URL}/storage/v1/object/public/photos/${encodeURIComponent(file.name)}`;
+
+
+                displayPhoto(photoURL);
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "Error loading existing photos:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // --------------------------------
+    // OPEN PHOTO PICKER
+    // --------------------------------
+
     uploadButton.addEventListener("click", function () {
+
         photoInput.click();
+
     });
 
 
-    // When photos are selected
+    // --------------------------------
+    // UPLOAD NEW PHOTOS
+    // --------------------------------
+
     photoInput.addEventListener("change", async function (event) {
 
         const files = Array.from(event.target.files);
+
 
         if (files.length === 0) {
             return;
@@ -36,14 +121,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         for (const file of files) {
 
-            // Only allow images
             if (!file.type.startsWith("image/")) {
+
                 alert(`${file.name} is not an image.`);
+
                 continue;
             }
 
 
-            // Create a unique filename
             const fileName =
                 Date.now() +
                 "-" +
@@ -75,7 +160,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (!uploadResponse.ok) {
 
-                    const errorText = await uploadResponse.text();
+                    const errorText =
+                        await uploadResponse.text();
 
                     console.error(
                         "Supabase upload error:",
@@ -86,39 +172,41 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                // Create the public image URL
                 const photoURL =
                     `${SUPABASE_URL}/storage/v1/object/public/photos/${encodeURIComponent(fileName)}`;
 
 
-                // Show photo on website
                 displayPhoto(photoURL);
 
 
-                console.log("Uploaded successfully:", file.name);
+                console.log(
+                    "Uploaded successfully:",
+                    file.name
+                );
 
-            }
 
-
-            catch (error) {
+            } catch (error) {
 
                 console.error(error);
 
                 alert(
                     `We couldn't upload ${file.name}. Please try again.`
                 );
+
             }
 
         }
 
 
-        // Reset input so the same photo can be selected again
         photoInput.value = "";
 
     });
 
 
-    // Display a photo in the album
+    // --------------------------------
+    // DISPLAY PHOTO
+    // --------------------------------
+
     function displayPhoto(photoURL) {
 
         const photo = document.createElement("div");
