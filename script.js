@@ -1,6 +1,6 @@
 const SUPABASE_URL = "https://itdlakiwmxpneznqdphn.supabase.co";
 
-// Keep your real publishable key here
+// KEEP YOUR REAL PUBLISHABLE KEY HERE
 const SUPABASE_KEY = "sb_publishable_9Jbfxdv4D0t8ndJ-lrSHPA_JA5Jbgaa";
 
 
@@ -10,43 +10,33 @@ document.addEventListener("DOMContentLoaded", function () {
     const photoInput = document.getElementById("photoInput");
     const photoGrid = document.getElementById("photoGrid");
 
+
     if (!uploadButton || !photoInput || !photoGrid) {
-        console.error("Photo uploader elements were not found.");
+        console.error("Photo elements not found.");
         return;
     }
 
 
-    // --------------------------------
-    // LOAD EXISTING PHOTOS
-    // --------------------------------
+    // ==========================================
+    // LOAD SAVED MEMORIES
+    // ==========================================
 
-    loadPhotos();
+    loadMemories();
 
 
-    async function loadPhotos() {
+    async function loadMemories() {
 
         try {
 
             const response = await fetch(
-                `${SUPABASE_URL}/storage/v1/object/list/photos`,
+                `${SUPABASE_URL}/rest/v1/memories?select=*&order=created_at.asc`,
                 {
-                    method: "POST",
+                    method: "GET",
 
                     headers: {
-                        "Authorization": `Bearer ${SUPABASE_KEY}`,
                         "apikey": SUPABASE_KEY,
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        prefix: "",
-                        limit: 100,
-                        offset: 0,
-                        sortBy: {
-                            column: "created_at",
-                            order: "asc"
-                        }
-                    })
+                        "Authorization": `Bearer ${SUPABASE_KEY}`
+                    }
                 }
             );
 
@@ -56,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const errorText = await response.text();
 
                 console.error(
-                    "Could not load photos:",
+                    "Could not load memories:",
                     errorText
                 );
 
@@ -64,19 +54,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            const files = await response.json();
+            const memories = await response.json();
 
 
-            for (const file of files) {
-
-                if (!file.name) {
-                    continue;
-                }
-
+            for (const memory of memories) {
 
                 const photoURL =
-                    `${SUPABASE_URL}/storage/v1/object/public/photos/${encodeURIComponent(file.name)}`;
-
+                    `${SUPABASE_URL}/storage/v1/object/public/photos/${encodeURIComponent(memory.file_name)}`;
 
                 displayPhoto(photoURL);
             }
@@ -85,18 +69,17 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
 
             console.error(
-                "Error loading existing photos:",
+                "Error loading memories:",
                 error
             );
 
         }
-
     }
 
 
-    // --------------------------------
+    // ==========================================
     // OPEN PHOTO PICKER
-    // --------------------------------
+    // ==========================================
 
     uploadButton.addEventListener("click", function () {
 
@@ -105,9 +88,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    // --------------------------------
-    // UPLOAD NEW PHOTOS
-    // --------------------------------
+    // ==========================================
+    // UPLOAD PHOTOS
+    // ==========================================
 
     photoInput.addEventListener("change", async function (event) {
 
@@ -142,6 +125,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("Uploading:", file.name);
 
 
+                // ----------------------------------
+                // UPLOAD PHOTO TO STORAGE
+                // ----------------------------------
+
                 const uploadResponse = await fetch(
                     `${SUPABASE_URL}/storage/v1/object/photos/${encodeURIComponent(fileName)}`,
                     {
@@ -164,13 +151,54 @@ document.addEventListener("DOMContentLoaded", function () {
                         await uploadResponse.text();
 
                     console.error(
-                        "Supabase upload error:",
+                        "Storage upload error:",
                         errorText
                     );
 
                     throw new Error(errorText);
                 }
 
+
+                // ----------------------------------
+                // SAVE PHOTO INFORMATION TO DATABASE
+                // ----------------------------------
+
+                const databaseResponse = await fetch(
+                    `${SUPABASE_URL}/rest/v1/memories`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "apikey": SUPABASE_KEY,
+                            "Authorization": `Bearer ${SUPABASE_KEY}`,
+                            "Content-Type": "application/json",
+                            "Prefer": "return=minimal"
+                        },
+
+                        body: JSON.stringify({
+                            file_name: fileName
+                        })
+                    }
+                );
+
+
+                if (!databaseResponse.ok) {
+
+                    const errorText =
+                        await databaseResponse.text();
+
+                    console.error(
+                        "Database error:",
+                        errorText
+                    );
+
+                    throw new Error(errorText);
+                }
+
+
+                // ----------------------------------
+                // DISPLAY PHOTO
+                // ----------------------------------
 
                 const photoURL =
                     `${SUPABASE_URL}/storage/v1/object/public/photos/${encodeURIComponent(fileName)}`;
@@ -180,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 console.log(
-                    "Uploaded successfully:",
+                    "Memory saved successfully:",
                     file.name
                 );
 
@@ -190,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error(error);
 
                 alert(
-                    `We couldn't upload ${file.name}. Please try again.`
+                    `We couldn't save ${file.name}. Please try again.`
                 );
 
             }
@@ -203,9 +231,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    // --------------------------------
+    // ==========================================
     // DISPLAY PHOTO
-    // --------------------------------
+    // ==========================================
 
     function displayPhoto(photoURL) {
 
