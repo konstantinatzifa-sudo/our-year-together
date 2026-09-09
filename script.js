@@ -17,12 +17,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ==========================================
-    // LOAD MEMORIES FROM DATABASE
+    // LOAD MEMORIES
     // ==========================================
 
-    async function loadMemories() {
+    loadMemories();
 
-        console.log("Loading memories...");
+
+    async function loadMemories() {
 
         try {
 
@@ -45,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 console.error(
                     "DATABASE LOAD ERROR:",
-                    response.status,
                     errorText
                 );
 
@@ -55,10 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const memories = await response.json();
 
-            console.log("Memories found:", memories);
-
-
-            // Clear the grid before loading
             photoGrid.innerHTML = "";
 
 
@@ -67,7 +63,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 const photoURL =
                     `${SUPABASE_URL}/storage/v1/object/public/photos/${encodeURIComponent(memory.file_name)}`;
 
-                displayPhoto(photoURL);
+                displayPhoto(
+                    photoURL,
+                    memory.id,
+                    memory.file_name
+                );
 
             });
 
@@ -81,10 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
     }
-
-
-    // Load photos immediately
-    loadMemories();
 
 
     // ==========================================
@@ -133,9 +129,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("Uploading:", file.name);
 
 
-                // ==================================
-                // 1. UPLOAD PHOTO TO STORAGE
-                // ==================================
+                // ----------------------------------
+                // UPLOAD TO STORAGE
+                // ----------------------------------
 
                 const uploadResponse = await fetch(
                     `${SUPABASE_URL}/storage/v1/object/photos/${encodeURIComponent(fileName)}`,
@@ -160,7 +156,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     console.error(
                         "STORAGE ERROR:",
-                        uploadResponse.status,
                         errorText
                     );
 
@@ -170,14 +165,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                console.log(
-                    "Photo uploaded to Storage."
-                );
-
-
-                // ==================================
-                // 2. SAVE PHOTO IN DATABASE
-                // ==================================
+                // ----------------------------------
+                // SAVE TO DATABASE
+                // ----------------------------------
 
                 const databaseResponse = await fetch(
                     `${SUPABASE_URL}/rest/v1/memories`,
@@ -204,13 +194,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         await databaseResponse.text();
 
                     console.error(
-                        "DATABASE SAVE ERROR:",
-                        databaseResponse.status,
+                        "DATABASE ERROR:",
                         errorText
                     );
 
                     throw new Error(
-                        "Photo information could not be saved."
+                        "Database save failed."
                     );
                 }
 
@@ -219,27 +208,29 @@ document.addEventListener("DOMContentLoaded", () => {
                     await databaseResponse.json();
 
 
-                console.log(
-                    "Database record created:",
-                    savedMemory
-                );
+                const memoryID =
+                    savedMemory[0].id;
 
 
-                // ==================================
-                // 3. DISPLAY PHOTO
-                // ==================================
+                // ----------------------------------
+                // DISPLAY PHOTO
+                // ----------------------------------
 
                 const photoURL =
                     `${SUPABASE_URL}/storage/v1/object/public/photos/${encodeURIComponent(fileName)}`;
 
 
-                displayPhoto(photoURL);
+                displayPhoto(
+                    photoURL,
+                    memoryID,
+                    fileName
+                );
 
 
             } catch (error) {
 
                 console.error(
-                    "UPLOAD PROCESS FAILED:",
+                    "UPLOAD FAILED:",
                     error
                 );
 
@@ -261,7 +252,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // DISPLAY PHOTO
     // ==========================================
 
-    function displayPhoto(photoURL) {
+    function displayPhoto(
+        photoURL,
+        memoryID,
+        fileName
+    ) {
 
         const photo =
             document.createElement("div");
@@ -269,6 +264,10 @@ document.addEventListener("DOMContentLoaded", () => {
         photo.className =
             "memory-photo";
 
+
+        // ----------------------------------
+        // IMAGE
+        // ----------------------------------
 
         const image =
             document.createElement("img");
@@ -282,7 +281,167 @@ document.addEventListener("DOMContentLoaded", () => {
 
         photo.appendChild(image);
 
+
+        // ----------------------------------
+        // DELETE BUTTON
+        // ----------------------------------
+
+        const deleteButton =
+            document.createElement("button");
+
+        deleteButton.className =
+            "delete-memory";
+
+        deleteButton.type =
+            "button";
+
+        deleteButton.innerHTML =
+            "×";
+
+
+        deleteButton.title =
+            "Delete this memory";
+
+
+        deleteButton.addEventListener(
+            "click",
+            async () => {
+
+                const confirmed =
+                    confirm(
+                        "Delete this memory?"
+                    );
+
+
+                if (!confirmed) {
+                    return;
+                }
+
+
+                await deleteMemory(
+                    photo,
+                    memoryID,
+                    fileName
+                );
+
+            }
+        );
+
+
+        photo.appendChild(deleteButton);
+
+
         photoGrid.appendChild(photo);
+
+    }
+
+
+    // ==========================================
+    // DELETE MEMORY
+    // ==========================================
+
+    async function deleteMemory(
+        photoElement,
+        memoryID,
+        fileName
+    ) {
+
+        try {
+
+            // ----------------------------------
+            // DELETE PHOTO FROM STORAGE
+            // ----------------------------------
+
+            const storageResponse =
+                await fetch(
+                    `${SUPABASE_URL}/storage/v1/object/photos/${encodeURIComponent(fileName)}`,
+                    {
+                        method: "DELETE",
+
+                        headers: {
+                            "apikey": SUPABASE_KEY,
+                            "Authorization":
+                                `Bearer ${SUPABASE_KEY}`
+                        }
+                    }
+                );
+
+
+            if (!storageResponse.ok) {
+
+                const errorText =
+                    await storageResponse.text();
+
+                console.error(
+                    "STORAGE DELETE ERROR:",
+                    errorText
+                );
+
+                throw new Error(
+                    "Could not delete photo."
+                );
+            }
+
+
+            // ----------------------------------
+            // DELETE DATABASE RECORD
+            // ----------------------------------
+
+            const databaseResponse =
+                await fetch(
+                    `${SUPABASE_URL}/rest/v1/memories?id=eq.${memoryID}`,
+                    {
+                        method: "DELETE",
+
+                        headers: {
+                            "apikey": SUPABASE_KEY,
+                            "Authorization":
+                                `Bearer ${SUPABASE_KEY}`
+                        }
+                    }
+                );
+
+
+            if (!databaseResponse.ok) {
+
+                const errorText =
+                    await databaseResponse.text();
+
+                console.error(
+                    "DATABASE DELETE ERROR:",
+                    errorText
+                );
+
+                throw new Error(
+                    "Could not delete memory record."
+                );
+            }
+
+
+            // ----------------------------------
+            // REMOVE FROM PAGE
+            // ----------------------------------
+
+            photoElement.remove();
+
+
+            console.log(
+                "Memory deleted successfully."
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "DELETE FAILED:",
+                error
+            );
+
+            alert(
+                "We couldn't delete this memory. Please try again."
+            );
+
+        }
 
     }
 
