@@ -197,6 +197,47 @@
                 font-size: 18px;
             }
         }
+
+        .memory-controls {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+#uploadButton {
+    border: 1px solid #f8f3ed;
+    background: transparent;
+    color: #f8f3ed;
+    padding: 14px 25px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#uploadButton:hover {
+    background: #f8f3ed;
+    color: #302923;
+}
+
+.memory-photo {
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background: #574d45;
+}
+
+.memory-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.memory-photo:hover img {
+    transform: scale(1.05);
+}
     </style>
 </head>
 
@@ -254,34 +295,23 @@
             </p>
 
         </div>
+<div class="memory-controls">
 
-        <div class="photo-grid">
+    <button id="uploadButton">
+        + Add memories
+    </button>
 
-            <div class="photo-placeholder">
-                PHOTO 01
-            </div>
+    <input
+        type="file"
+        id="photoInput"
+        accept="image/*"
+        multiple
+        hidden
+    >
 
-            <div class="photo-placeholder">
-                PHOTO 02
-            </div>
+</div>
 
-            <div class="photo-placeholder">
-                PHOTO 03
-            </div>
-
-            <div class="photo-placeholder">
-                PHOTO 04
-            </div>
-
-            <div class="photo-placeholder">
-                PHOTO 05
-            </div>
-
-            <div class="photo-placeholder">
-                PHOTO 06
-            </div>
-
-        </div>
+<div class="photo-grid" id="photoGrid"></div>
 
     </section>
 
@@ -347,6 +377,8 @@
         </p>
 
     </footer>
-
+    
+<script src="script.js"></script>
+    
 </body>
 </html>
