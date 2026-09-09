@@ -1,10 +1,9 @@
 const SUPABASE_URL = "https://itdlakiwmxpneznqdphn.supabase.co";
 
-// KEEP YOUR REAL PUBLISHABLE KEY HERE
 const SUPABASE_KEY = "sb_publishable_9Jbfxdv4D0t8ndJ-lrSHPA_JA5Jbgaa";
 
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
     const uploadButton = document.getElementById("uploadButton");
     const photoInput = document.getElementById("photoInput");
@@ -18,18 +17,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // LOAD SAVED MEMORIES
+    // LOAD MEMORIES FROM DATABASE
     // ==========================================
 
-    loadMemories();
-
-
     async function loadMemories() {
+
+        console.log("Loading memories...");
 
         try {
 
             const response = await fetch(
-                `${SUPABASE_URL}/rest/v1/memories?select=*&order=created_at.asc`,
+                `${SUPABASE_URL}/rest/v1/memories?select=id,file_name,created_at&order=created_at.asc`,
                 {
                     method: "GET",
 
@@ -46,7 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 const errorText = await response.text();
 
                 console.error(
-                    "Could not load memories:",
+                    "DATABASE LOAD ERROR:",
+                    response.status,
                     errorText
                 );
 
@@ -56,20 +55,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const memories = await response.json();
 
+            console.log("Memories found:", memories);
 
-            for (const memory of memories) {
+
+            // Clear the grid before loading
+            photoGrid.innerHTML = "";
+
+
+            memories.forEach(memory => {
 
                 const photoURL =
                     `${SUPABASE_URL}/storage/v1/object/public/photos/${encodeURIComponent(memory.file_name)}`;
 
                 displayPhoto(photoURL);
-            }
+
+            });
 
 
         } catch (error) {
 
             console.error(
-                "Error loading memories:",
+                "MEMORY LOAD FAILED:",
                 error
             );
 
@@ -77,11 +83,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    // Load photos immediately
+    loadMemories();
+
+
     // ==========================================
     // OPEN PHOTO PICKER
     // ==========================================
 
-    uploadButton.addEventListener("click", function () {
+    uploadButton.addEventListener("click", () => {
 
         photoInput.click();
 
@@ -92,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // UPLOAD PHOTOS
     // ==========================================
 
-    photoInput.addEventListener("change", async function (event) {
+    photoInput.addEventListener("change", async (event) => {
 
         const files = Array.from(event.target.files);
 
@@ -113,11 +123,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             const fileName =
-                Date.now() +
-                "-" +
-                Math.random().toString(36).substring(2) +
-                "-" +
-                file.name;
+                `${Date.now()}-${Math.random()
+                    .toString(36)
+                    .substring(2)}-${file.name}`;
 
 
             try {
@@ -125,9 +133,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("Uploading:", file.name);
 
 
-                // ----------------------------------
-                // UPLOAD PHOTO TO STORAGE
-                // ----------------------------------
+                // ==================================
+                // 1. UPLOAD PHOTO TO STORAGE
+                // ==================================
 
                 const uploadResponse = await fetch(
                     `${SUPABASE_URL}/storage/v1/object/photos/${encodeURIComponent(fileName)}`,
@@ -151,17 +159,25 @@ document.addEventListener("DOMContentLoaded", function () {
                         await uploadResponse.text();
 
                     console.error(
-                        "Storage upload error:",
+                        "STORAGE ERROR:",
+                        uploadResponse.status,
                         errorText
                     );
 
-                    throw new Error(errorText);
+                    throw new Error(
+                        "Photo upload failed."
+                    );
                 }
 
 
-                // ----------------------------------
-                // SAVE PHOTO INFORMATION TO DATABASE
-                // ----------------------------------
+                console.log(
+                    "Photo uploaded to Storage."
+                );
+
+
+                // ==================================
+                // 2. SAVE PHOTO IN DATABASE
+                // ==================================
 
                 const databaseResponse = await fetch(
                     `${SUPABASE_URL}/rest/v1/memories`,
@@ -172,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             "apikey": SUPABASE_KEY,
                             "Authorization": `Bearer ${SUPABASE_KEY}`,
                             "Content-Type": "application/json",
-                            "Prefer": "return=minimal"
+                            "Prefer": "return=representation"
                         },
 
                         body: JSON.stringify({
@@ -188,17 +204,30 @@ document.addEventListener("DOMContentLoaded", function () {
                         await databaseResponse.text();
 
                     console.error(
-                        "Database error:",
+                        "DATABASE SAVE ERROR:",
+                        databaseResponse.status,
                         errorText
                     );
 
-                    throw new Error(errorText);
+                    throw new Error(
+                        "Photo information could not be saved."
+                    );
                 }
 
 
-                // ----------------------------------
-                // DISPLAY PHOTO
-                // ----------------------------------
+                const savedMemory =
+                    await databaseResponse.json();
+
+
+                console.log(
+                    "Database record created:",
+                    savedMemory
+                );
+
+
+                // ==================================
+                // 3. DISPLAY PHOTO
+                // ==================================
 
                 const photoURL =
                     `${SUPABASE_URL}/storage/v1/object/public/photos/${encodeURIComponent(fileName)}`;
@@ -207,15 +236,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 displayPhoto(photoURL);
 
 
-                console.log(
-                    "Memory saved successfully:",
-                    file.name
-                );
-
-
             } catch (error) {
 
-                console.error(error);
+                console.error(
+                    "UPLOAD PROCESS FAILED:",
+                    error
+                );
 
                 alert(
                     `We couldn't save ${file.name}. Please try again.`
@@ -237,16 +263,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function displayPhoto(photoURL) {
 
-        const photo = document.createElement("div");
+        const photo =
+            document.createElement("div");
 
-        photo.className = "memory-photo";
+        photo.className =
+            "memory-photo";
 
 
-        const image = document.createElement("img");
+        const image =
+            document.createElement("img");
 
-        image.src = photoURL;
+        image.src =
+            photoURL;
 
-        image.alt = "Our memory";
+        image.alt =
+            "Our memory";
 
 
         photo.appendChild(image);
