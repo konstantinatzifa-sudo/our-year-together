@@ -7,66 +7,157 @@
     <title>Our Year Together ♡</title>
 
     <style>
+
+        /* =========================================
+           RESET
+        ========================================= */
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: Georgia, "Times New Roman", serif;
-            background: #f8f3ed;
+            background: #f4eee5;
             color: #302923;
+            overflow-x: hidden;
         }
+
+
+        /* =========================================
+           GENERAL
+        ========================================= */
+
+        section {
+            position: relative;
+            padding: 110px 8%;
+        }
+
+        .number {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-weight: normal;
+            font-size: clamp(40px, 6vw, 72px);
+            line-height: 1;
+        }
+
+
+        /* =========================================
+           HERO
+        ========================================= */
 
         .hero {
             min-height: 100vh;
+
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+
             text-align: center;
-            padding: 30px;
+
+            padding: 40px;
+
+            position: relative;
+
             background:
                 linear-gradient(
-                    rgba(248,243,237,0.72),
-                    rgba(248,243,237,0.72)
+                    rgba(245,238,228,0.48),
+                    rgba(245,238,228,0.48)
                 ),
-                url("https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=2000&q=80")
-                center/cover;
+                url("https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=2000&q=85")
+                center / cover;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 35px;
+
+            background: #f4eee5;
+
+            clip-path: polygon(
+                0 40%,
+                5% 55%,
+                10% 35%,
+                15% 60%,
+                20% 40%,
+                25% 58%,
+                30% 38%,
+                35% 62%,
+                40% 42%,
+                45% 58%,
+                50% 35%,
+                55% 60%,
+                60% 40%,
+                65% 58%,
+                70% 38%,
+                75% 62%,
+                80% 40%,
+                85% 57%,
+                90% 38%,
+                95% 60%,
+                100% 40%,
+                100% 100%,
+                0 100%
+            );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
         }
 
         .small-title {
             font-family: Arial, sans-serif;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            font-size: 12px;
-            margin-bottom: 25px;
+            letter-spacing: 5px;
+            font-size: 11px;
+            margin-bottom: 28px;
         }
 
-        h1 {
-            font-size: clamp(55px, 11vw, 110px);
+        .hero h1 {
+            font-size: clamp(58px, 10vw, 115px);
             font-weight: normal;
-            line-height: 0.9;
-            margin-bottom: 25px;
+            line-height: 0.88;
+            letter-spacing: -3px;
+            margin-bottom: 30px;
         }
 
         .date {
             font-family: Arial, sans-serif;
-            letter-spacing: 2px;
-            font-size: 13px;
+            letter-spacing: 3px;
+            font-size: 11px;
         }
 
         .scroll {
-            margin-top: 80px;
+            margin-top: 90px;
+
             font-family: Arial, sans-serif;
-            font-size: 11px;
-            letter-spacing: 3px;
+            font-size: 10px;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            animation: float 2s infinite ease-in-out;
+
+            animation: float 2.5s infinite ease-in-out;
         }
 
         @keyframes float {
+
             0%, 100% {
                 transform: translateY(0);
             }
@@ -74,300 +165,805 @@
             50% {
                 transform: translateY(8px);
             }
+
         }
 
-        section {
-            padding: 100px 8%;
+
+        /* =========================================
+           INTRO
+        ========================================= */
+
+        .intro-section {
+            background: #f4eee5;
+            min-height: 480px;
+
+            display: flex;
+            align-items: center;
         }
 
         .intro {
-            max-width: 800px;
+            max-width: 950px;
+            width: 100%;
             margin: auto;
-            text-align: center;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: center;
         }
 
-        .number {
-            font-family: Arial, sans-serif;
-            font-size: 11px;
-            letter-spacing: 3px;
-            margin-bottom: 20px;
+        .intro-text h2 {
+            margin-bottom: 30px;
         }
 
-        h2 {
-            font-size: clamp(38px, 6vw, 70px);
-            font-weight: normal;
-            margin-bottom: 25px;
-        }
-
-        .intro p {
+        .intro-text p {
+            max-width: 550px;
             font-size: 19px;
-            line-height: 1.8;
+            line-height: 1.9;
         }
+
+
+        /* =========================================
+           PAPER NOTE
+        ========================================= */
+
+        .paper-note {
+            width: 240px;
+            min-height: 170px;
+
+            margin: auto;
+
+            padding: 38px 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.35),
+                    transparent
+                ),
+                #e7d9c6;
+
+            box-shadow:
+                0 10px 25px rgba(48,41,35,0.12);
+
+            transform: rotate(4deg);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            font-size: 23px;
+            line-height: 1.3;
+
+            position: relative;
+        }
+
+        .paper-note::before {
+            content: "";
+
+            position: absolute;
+
+            width: 85px;
+            height: 27px;
+
+            background: rgba(205,177,133,0.55);
+
+            top: -13px;
+            left: 72px;
+
+            transform: rotate(-5deg);
+        }
+
+        .paper-note::after {
+            content: "♡";
+
+            position: absolute;
+
+            right: 18px;
+            bottom: 12px;
+
+            font-size: 20px;
+        }
+
+
+        /* =========================================
+           MEMORIES
+        ========================================= */
 
         .memories {
-            background: #302923;
-            color: #f8f3ed;
+            background: #332a24;
+            color: #f7f0e7;
+
+            padding-top: 100px;
+            padding-bottom: 120px;
+        }
+
+        .memories::before {
+            content: "";
+
+            position: absolute;
+            top: -18px;
+            left: 0;
+
+            width: 100%;
+            height: 30px;
+
+            background: #332a24;
+
+            clip-path: polygon(
+                0 55%,
+                6% 35%,
+                12% 60%,
+                18% 40%,
+                25% 62%,
+                32% 38%,
+                39% 58%,
+                46% 40%,
+                53% 62%,
+                60% 35%,
+                68% 58%,
+                75% 40%,
+                82% 60%,
+                90% 38%,
+                100% 55%,
+                100% 100%,
+                0 100%
+            );
+        }
+
+        .memory-layout {
+            max-width: 1200px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: 280px 1fr;
+
+            gap: 80px;
+            align-items: start;
         }
 
         .memory-header {
-            text-align: center;
-            margin-bottom: 60px;
+            position: sticky;
+            top: 40px;
+        }
+
+        .memory-header .number {
+            color: #cdbca8;
         }
 
         .memory-header h2 {
-            margin-bottom: 15px;
+            font-size: clamp(42px, 5vw, 65px);
+            margin-bottom: 25px;
         }
 
         .memory-header p {
             font-family: Arial, sans-serif;
-            font-size: 13px;
-            letter-spacing: 1px;
-            opacity: 0.7;
+            font-size: 10px;
+            letter-spacing: 2px;
+            line-height: 1.7;
+            opacity: 0.65;
+            margin-bottom: 35px;
         }
 
+
+        /* =========================================
+           ADD BUTTON
+        ========================================= */
+
         .memory-controls {
-            text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 0;
         }
 
         #uploadButton {
-            border: 1px solid #f8f3ed;
+            border: 1px solid #f7f0e7;
+
             background: transparent;
-            color: #f8f3ed;
-            padding: 14px 25px;
+            color: #f7f0e7;
+
+            padding: 15px 23px;
+
             font-family: Arial, sans-serif;
-            font-size: 12px;
+            font-size: 10px;
+
             letter-spacing: 2px;
             text-transform: uppercase;
+
             cursor: pointer;
-            transition: all 0.3s ease;
+
+            transition:
+                background 0.3s ease,
+                color 0.3s ease,
+                transform 0.3s ease;
         }
 
         #uploadButton:hover {
-            background: #f8f3ed;
-            color: #302923;
+            background: #f7f0e7;
+            color: #332a24;
+            transform: translateY(-2px);
         }
 
+
+        /* =========================================
+           SCRAPBOOK PHOTO GRID
+        ========================================= */
+
         .photo-grid {
-            max-width: 1100px;
-            margin: auto;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 45px 35px;
+
+            align-items: start;
         }
 
         .memory-photo {
-            overflow: hidden;
-            aspect-ratio: 1 / 1;
-            background: #574d45;
+            position: relative;
+
+            background: #f7f0e7;
+
+            padding: 12px 12px 42px;
+
+            box-shadow:
+                0 12px 25px rgba(0,0,0,0.25);
+
+            transition:
+                transform 0.4s ease,
+                box-shadow 0.4s ease;
+
+            color: #302923;
+        }
+
+        .memory-photo:nth-child(1) {
+            transform: rotate(-3deg);
+        }
+
+        .memory-photo:nth-child(2) {
+            transform: rotate(4deg);
+            margin-top: 30px;
+        }
+
+        .memory-photo:nth-child(3) {
+            transform: rotate(2deg);
+            margin-top: -10px;
+        }
+
+        .memory-photo:nth-child(4) {
+            transform: rotate(-4deg);
+            margin-top: 25px;
+        }
+
+        .memory-photo:nth-child(5) {
+            transform: rotate(-2deg);
+        }
+
+        .memory-photo:nth-child(6) {
+            transform: rotate(4deg);
+            margin-top: 25px;
+        }
+
+        .memory-photo:hover {
+            transform: rotate(0deg) scale(1.035) !important;
+            z-index: 5;
+
+            box-shadow:
+                0 20px 40px rgba(0,0,0,0.35);
         }
 
         .memory-photo img {
             width: 100%;
-            height: 100%;
+            aspect-ratio: 1 / 1;
+
             object-fit: cover;
+
             display: block;
-            transition: transform 0.5s ease;
         }
 
-        .memory-photo:hover img {
-            transform: scale(1.05);
+
+        /* Tape on photos */
+
+        .memory-photo::before {
+            content: "";
+
+            position: absolute;
+
+            width: 72px;
+            height: 25px;
+
+            background: rgba(207,180,138,0.58);
+
+            top: -13px;
+            left: 50%;
+
+            transform: translateX(-50%) rotate(-2deg);
+
+            z-index: 2;
         }
 
-        .letter {
-            max-width: 750px;
-            margin: auto;
+        .memory-photo:nth-child(even)::before {
+            transform:
+                translateX(-50%)
+                rotate(5deg);
         }
 
-        .letter p {
-            font-size: 21px;
-            line-height: 1.9;
-            margin-bottom: 25px;
+
+        /* Handwritten-style little heart */
+
+        .memory-photo::after {
+            content: "♡";
+
+            position: absolute;
+
+            bottom: 9px;
+            right: 15px;
+
+            color: #5a4a3e;
+
+            font-size: 19px;
         }
+
+
+        /* =========================================
+           SONG
+        ========================================= */
 
         .song {
-            background: #e7ddd2;
-            text-align: center;
+            background: #e6d9ca;
+
+            min-height: 330px;
+
+            display: flex;
+            align-items: center;
+        }
+
+        .song-inner {
+            max-width: 1050px;
+            width: 100%;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            align-items: center;
+
+            gap: 80px;
+        }
+
+        .song h2 {
+            margin-bottom: 10px;
         }
 
         .song-title {
-            font-size: 28px;
-            margin-bottom: 10px;
+            font-size: 27px;
+            margin-bottom: 8px;
         }
 
         .artist {
             font-family: Arial, sans-serif;
-            font-size: 12px;
-            letter-spacing: 2px;
+            font-size: 10px;
+            letter-spacing: 3px;
             text-transform: uppercase;
         }
 
-        footer {
-            padding: 70px 20px;
+        .song-note {
+            font-size: 55px;
             text-align: center;
-            background: #302923;
-            color: #f8f3ed;
+            transform: rotate(8deg);
+        }
+
+
+        /* =========================================
+           LETTER
+        ========================================= */
+
+        .letter-section {
+            background: #f4eee5;
+        }
+
+        .letter {
+            max-width: 1050px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+
+            gap: 100px;
+
+            align-items: start;
+        }
+
+        .letter h2 {
+            font-size: clamp(42px, 5vw, 65px);
+        }
+
+        .letter-content {
+            font-size: 19px;
+            line-height: 1.9;
+        }
+
+        .letter-content p {
+            margin-bottom: 25px;
+        }
+
+        .letter-signature {
+            font-size: 27px;
+            font-style: italic;
+            margin-top: 35px;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        footer {
+            padding: 85px 20px;
+
+            text-align: center;
+
+            background: #332a24;
+
+            color: #f7f0e7;
         }
 
         footer p {
-            font-size: 25px;
+            font-size: 27px;
             font-style: italic;
         }
 
-        @media (max-width: 700px) {
-            .photo-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        footer .heart {
+            margin-top: 15px;
+            font-size: 25px;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 800px) {
 
             section {
-                padding: 75px 7%;
+                padding: 80px 7%;
             }
 
-            .letter p {
-                font-size: 18px;
+            .hero h1 {
+                letter-spacing: -2px;
             }
+
+            .intro {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .paper-note {
+                width: 210px;
+            }
+
+            .memory-layout {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .memory-header {
+                position: static;
+            }
+
+            .photo-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px 20px;
+            }
+
+            .song-inner {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+
+            .song-note {
+                display: none;
+            }
+
+            .letter {
+                grid-template-columns: 1fr;
+                gap: 45px;
+            }
+
         }
+
+
+        @media (max-width: 500px) {
+
+            .hero {
+                padding: 25px;
+            }
+
+            .hero h1 {
+                font-size: 58px;
+            }
+
+            .date {
+                font-size: 9px;
+                letter-spacing: 2px;
+            }
+
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .memory-photo:nth-child(n) {
+                margin-top: 0;
+            }
+
+            .memory-photo:nth-child(odd) {
+                transform: rotate(-2deg);
+            }
+
+            .memory-photo:nth-child(even) {
+                transform: rotate(2deg);
+            }
+
+        }
+
     </style>
 </head>
 
+
 <body>
 
-    <!-- COVER -->
+
+    <!-- ======================================
+         COVER
+    ======================================= -->
+
     <header class="hero">
-        <div class="small-title">Our story</div>
 
-        <h1>
-            One Year<br>
-            With You
-        </h1>
+        <div class="hero-content">
 
-        <div class="date">
-            10 SEPTEMBER 2025 — 10 SEPTEMBER 2026
+            <div class="small-title">
+                Our story
+            </div>
+
+            <h1>
+                One Year<br>
+                With You
+            </h1>
+
+            <div class="date">
+                10 SEPTEMBER 2025 — 10 SEPTEMBER 2026
+            </div>
+
+            <div class="scroll">
+                ↓ &nbsp; scroll to begin
+            </div>
+
         </div>
 
-        <div class="scroll">
-            ↓ &nbsp; scroll to begin
-        </div>
     </header>
 
 
-    <!-- INTRO -->
-    <section>
+
+    <!-- ======================================
+         INTRO
+    ======================================= -->
+
+    <section class="intro-section">
+
         <div class="intro">
 
-            <div class="number">01 — US</div>
+            <div class="intro-text">
 
-            <h2>A year of us.</h2>
+                <div class="number">
+                    01 — US
+                </div>
 
-            <p>
-                One year ago, our story began.
-                This little corner of the internet is a collection
-                of the moments, places, laughs and memories
-                that made this year ours.
-            </p>
+                <h2>
+                    A year of us.
+                </h2>
+
+                <p>
+                    One year ago, our story began.
+                    This little corner of the internet is a collection
+                    of the moments, places, laughs and memories
+                    that made this year ours.
+                </p>
+
+            </div>
+
+
+            <div class="paper-note">
+
+                same people,<br>
+                new adventures ♡
+
+            </div>
 
         </div>
+
     </section>
 
 
-    <!-- MEMORIES -->
+
+    <!-- ======================================
+         MEMORIES
+    ======================================= -->
+
     <section class="memories">
 
-        <div class="memory-header">
+        <div class="memory-layout">
 
-            <div class="number">02 — MEMORIES</div>
 
-            <h2>The moments I want to remember.</h2>
+            <div class="memory-header">
 
-            <p>
-                OUR FIRST DIGITAL PHOTO ALBUM
-            </p>
+                <div class="number">
+                    02 — Memories
+                </div>
 
-        </div>
+                <h2>
+                    The moments I want to remember.
+                </h2>
 
-        <div class="memory-controls">
+                <p>
+                    OUR FIRST DIGITAL PHOTO ALBUM
+                </p>
 
-            <button id="uploadButton" type="button">
-                + Add memories
-            </button>
 
-            <input
-                type="file"
-                id="photoInput"
-                accept="image/*"
-                multiple
-                hidden
+                <div class="memory-controls">
+
+                    <button
+                        id="uploadButton"
+                        type="button"
+                    >
+                        + Add memories
+                    </button>
+
+
+                    <input
+                        type="file"
+                        id="photoInput"
+                        accept="image/*"
+                        multiple
+                        hidden
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="photo-grid"
+                id="photoGrid"
             >
+            </div>
+
 
         </div>
-
-        <div class="photo-grid" id="photoGrid"></div>
 
     </section>
 
 
-    <!-- SONG -->
+
+    <!-- ======================================
+         OUR SONG
+    ======================================= -->
+
     <section class="song">
 
-        <div class="number">03 — OUR SONG</div>
+        <div class="song-inner">
 
-        <h2>Waiting</h2>
+            <div>
 
-        <div class="song-title">
-            Notion
-        </div>
+                <div class="number">
+                    03 — Our song
+                </div>
 
-        <div class="artist">
-            Our song ♡
+                <h2>
+                    Waiting
+                </h2>
+
+                <div class="song-title">
+                    Notion
+                </div>
+
+                <div class="artist">
+                    Our song ♡
+                </div>
+
+            </div>
+
+
+            <div class="song-note">
+                ♡
+            </div>
+
         </div>
 
     </section>
 
 
-    <!-- LETTER -->
-    <section>
+
+    <!-- ======================================
+         LETTER
+    ======================================= -->
+
+    <section class="letter-section">
 
         <div class="letter">
 
-            <div class="number">04 — A LETTER</div>
 
-            <h2>Dear Fabian,</h2>
+            <div>
 
-            <p>
-                One year ago you asked me to be your girlfriend.
-                By accepting, I didn't know how much this year
-                would come to mean to me.
-            </p>
+                <div class="number">
+                    04 — A letter
+                </div>
 
-            <p>
-                Somehow, between all the ordinary days and
-                the little adventures, you became such an
-                important part of my life.
-            </p>
+                <h2>
+                    Dear Fabian,
+                </h2>
 
-            <p>
-                Here's to everything we've already experienced,
-                and everything that's still waiting for us.
-            </p>
+            </div>
 
-            <p>
-                Happy one year, my love. ♡
-            </p>
+
+            <div class="letter-content">
+
+                <p>
+                    One year ago you asked me to be your girlfriend.
+                    By accepting, I didn't know how much this year
+                    would come to mean to me.
+                </p>
+
+                <p>
+                    Somehow, between all the ordinary days and
+                    the little adventures, you became such an
+                    important part of my life.
+                </p>
+
+                <p>
+                    Here's to everything we've already experienced,
+                    and everything that's still waiting for us.
+                </p>
+
+                <p>
+                    Happy one year, my love. ♡
+                </p>
+
+                <div class="letter-signature">
+                    Always & forever
+                </div>
+
+            </div>
+
 
         </div>
 
     </section>
 
 
-    <!-- END -->
+
+    <!-- ======================================
+         FOOTER
+    ======================================= -->
+
     <footer>
 
         <p>
             To be continued...
         </p>
 
+        <div class="heart">
+            ♡
+        </div>
+
     </footer>
 
+
+
+    <!-- ======================================
+         DO NOT REMOVE
+         This is your working photo system.
+    ======================================= -->
 
     <script src="script.js"></script>
 
