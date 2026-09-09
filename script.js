@@ -3,14 +3,21 @@ const SUPABASE_KEY = "sb_publishable_9Jbfxdv4D0t8ndJ-lrSHPA_JA5Jbgaa";
 
 document.addEventListener("DOMContentLoaded", () => {
 
+    const uploadButton = document.getElementById("uploadButton");
     const photoInput = document.getElementById("photoInput");
     const photoGrid = document.getElementById("photoGrid");
 
-    if (!photoInput || !photoGrid) {
+    if (!uploadButton || !photoInput || !photoGrid) {
         console.error("Photo elements not found.");
         return;
     }
 
+    // Open the file picker when "+ Add memories" is clicked
+    uploadButton.addEventListener("click", () => {
+        photoInput.click();
+    });
+
+    // Handle selected photos
     photoInput.addEventListener("change", async (event) => {
 
         const files = Array.from(event.target.files);
