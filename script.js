@@ -1,5 +1,5 @@
-const SUPABASE_URL = https://itdlakiwmxpneznqdphn.supabase.co/rest/v1/
-const SUPABASE_KEY = [key]
+const SUPABASE_URL = "https://itdlakiwmxpneznqdphn.supabase.co";
+const SUPABASE_KEY = sb_publishable_9Jbfxdv4D0t8ndJ-lrSHPA_JA5Jbgaa
 
 const uploadButton = document.getElementById("uploadButton");
 const photoInput = document.getElementById("photoInput");
