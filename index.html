@@ -462,7 +462,9 @@
         }
 
 
-        /* Tape on photos */
+        /* =========================================
+           TAPE ON PHOTOS
+        ========================================= */
 
         .memory-photo::before {
             content: "";
@@ -489,7 +491,9 @@
         }
 
 
-        /* Handwritten-style little heart */
+        /* =========================================
+           HANDWRITTEN HEART
+        ========================================= */
 
         .memory-photo::after {
             content: "♡";
@@ -502,6 +506,57 @@
             color: #5a4a3e;
 
             font-size: 19px;
+        }
+
+
+        /* =========================================
+           DELETE PHOTO BUTTON
+        ========================================= */
+
+        .delete-photo {
+            position: absolute;
+
+            top: 8px;
+            right: 8px;
+
+            width: 30px;
+            height: 30px;
+
+            border: none;
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.92);
+            color: #332a24;
+
+            font-family: Arial, sans-serif;
+            font-size: 22px;
+            line-height: 28px;
+
+            cursor: pointer;
+
+            opacity: 0;
+
+            transition:
+                opacity 0.2s ease,
+                transform 0.2s ease;
+
+            z-index: 10;
+
+            box-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .memory-photo:hover .delete-photo {
+            opacity: 1;
+        }
+
+        .delete-photo:hover {
+            transform: scale(1.1);
+        }
+
+        .delete-photo:disabled {
+            cursor: wait;
+            opacity: 1;
         }
 
 
