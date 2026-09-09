@@ -28,7 +28,10 @@
             text-align: center;
             padding: 30px;
             background:
-                linear-gradient(rgba(248,243,237,0.72), rgba(248,243,237,0.72)),
+                linear-gradient(
+                    rgba(248,243,237,0.72),
+                    rgba(248,243,237,0.72)
+                ),
                 url("https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=2000&q=80")
                 center/cover;
         }
@@ -122,6 +125,29 @@
             opacity: 0.7;
         }
 
+        .memory-controls {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        #uploadButton {
+            border: 1px solid #f8f3ed;
+            background: transparent;
+            color: #f8f3ed;
+            padding: 14px 25px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #uploadButton:hover {
+            background: #f8f3ed;
+            color: #302923;
+        }
+
         .photo-grid {
             max-width: 1100px;
             margin: auto;
@@ -130,18 +156,22 @@
             gap: 20px;
         }
 
-        .photo-placeholder {
+        .memory-photo {
+            overflow: hidden;
             aspect-ratio: 1 / 1;
             background: #574d45;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            letter-spacing: 1px;
-            opacity: 0.8;
+        }
+
+        .memory-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .memory-photo:hover img {
+            transform: scale(1.05);
         }
 
         .letter {
@@ -197,47 +227,6 @@
                 font-size: 18px;
             }
         }
-
-        .memory-controls {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-#uploadButton {
-    border: 1px solid #f8f3ed;
-    background: transparent;
-    color: #f8f3ed;
-    padding: 14px 25px;
-    font-family: Arial, sans-serif;
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-#uploadButton:hover {
-    background: #f8f3ed;
-    color: #302923;
-}
-
-.memory-photo {
-    overflow: hidden;
-    aspect-ratio: 1 / 1;
-    background: #574d45;
-}
-
-.memory-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.5s ease;
-}
-
-.memory-photo:hover img {
-    transform: scale(1.05);
-}
     </style>
 </head>
 
@@ -295,23 +284,24 @@
             </p>
 
         </div>
-<div class="memory-controls">
 
-    <button id="uploadButton">
-        + Add memories
-    </button>
+        <div class="memory-controls">
 
-    <input
-        type="file"
-        id="photoInput"
-        accept="image/*"
-        multiple
-        hidden
-    >
+            <button id="uploadButton" type="button">
+                + Add memories
+            </button>
 
-</div>
+            <input
+                type="file"
+                id="photoInput"
+                accept="image/*"
+                multiple
+                hidden
+            >
 
-<div class="photo-grid" id="photoGrid"></div>
+        </div>
+
+        <div class="photo-grid" id="photoGrid"></div>
 
     </section>
 
@@ -377,6 +367,9 @@
         </p>
 
     </footer>
-    <script src="script.js" defer></script>
+
+
+    <script src="script.js"></script>
+
 </body>
 </html>
