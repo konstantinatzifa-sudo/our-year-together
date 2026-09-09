@@ -462,9 +462,7 @@
         }
 
 
-        /* =========================================
-           TAPE ON PHOTOS
-        ========================================= */
+        /* Tape on photos */
 
         .memory-photo::before {
             content: "";
@@ -491,9 +489,7 @@
         }
 
 
-        /* =========================================
-           HANDWRITTEN HEART
-        ========================================= */
+        /* Handwritten-style little heart */
 
         .memory-photo::after {
             content: "♡";
@@ -510,40 +506,27 @@
 
 
         /* =========================================
-           DELETE PHOTO BUTTON
+           DELETE BUTTON
         ========================================= */
 
         .delete-photo {
             position: absolute;
-
             top: 8px;
             right: 8px;
-
             width: 30px;
             height: 30px;
-
             border: none;
             border-radius: 50%;
-
             background: rgba(255, 255, 255, 0.92);
             color: #332a24;
-
             font-family: Arial, sans-serif;
             font-size: 22px;
             line-height: 28px;
-
             cursor: pointer;
-
             opacity: 0;
-
-            transition:
-                opacity 0.2s ease,
-                transform 0.2s ease;
-
+            transition: opacity 0.2s ease, transform 0.2s ease;
             z-index: 10;
-
-            box-shadow:
-                0 2px 8px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
         }
 
         .memory-photo:hover .delete-photo {
@@ -567,7 +550,7 @@
         .song {
             background: #e6d9ca;
 
-            min-height: 330px;
+            min-height: 430px;
 
             display: flex;
             align-items: center;
@@ -579,33 +562,30 @@
             margin: auto;
 
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 0.8fr 1.2fr;
 
             align-items: center;
 
-            gap: 80px;
+            gap: 70px;
         }
 
         .song h2 {
             margin-bottom: 10px;
         }
 
-        .song-title {
-            font-size: 27px;
-            margin-bottom: 8px;
+        .song-subtitle {
+            font-size: 18px;
+            margin-top: 12px;
+            margin-bottom: 25px;
+            line-height: 1.6;
         }
 
-        .artist {
-            font-family: Arial, sans-serif;
-            font-size: 10px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .song-note {
-            font-size: 55px;
-            text-align: center;
-            transform: rotate(8deg);
+        .spotify-player {
+            width: 100%;
+            min-height: 352px;
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 15px 35px rgba(48, 41, 35, 0.18);
         }
 
 
@@ -716,8 +696,8 @@
                 gap: 35px;
             }
 
-            .song-note {
-                display: none;
+            .spotify-player {
+                min-height: 352px;
             }
 
             .letter {
@@ -757,6 +737,10 @@
 
             .memory-photo:nth-child(even) {
                 transform: rotate(2deg);
+            }
+
+            .song {
+                min-height: 500px;
             }
 
         }
@@ -918,20 +902,23 @@
                     Waiting
                 </h2>
 
-                <div class="song-title">
-                    Notion
-                </div>
-
-                <div class="artist">
-                    Our song ♡
+                <div class="song-subtitle">
+                    The song that belongs to us. ♡
                 </div>
 
             </div>
 
 
-            <div class="song-note">
-                ♡
-            </div>
+            <iframe
+                class="spotify-player"
+                src="https://open.spotify.com/embed/track/4K4itwcuTopegq8qWQnRzk"
+                width="100%"
+                height="352"
+                frameborder="0"
+                allowfullscreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy">
+            </iframe>
 
         </div>
 
